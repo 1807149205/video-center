@@ -1,7 +1,7 @@
 import { createRouter, createWebHistory } from 'vue-router'
 // @ts-ignore
-import MainView from "@/views/MainView.vue";
-import VideoView from '@/views/VideoView.vue';
+import MainView from '@/views/MainView.vue'
+import VideoView from '@/views/VideoView.vue'
 import MyView from '@/views/MyView.vue'
 
 const router = createRouter({
@@ -23,7 +23,7 @@ const router = createRouter({
           component: MyView
         }
       ]
-    },
+    }
     // {
     //   path: '/about',
     //   name: 'about',
