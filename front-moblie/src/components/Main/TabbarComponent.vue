@@ -29,7 +29,7 @@ onMounted(() => {
 
 <template>
   <div class="tabbar-container">
-    <van-tabbar v-model="active" active-color="#ee0a24">
+    <van-tabbar v-model="active" active-color="var(--theme-color)">
       <van-tabbar-item icon="video-o" replace to="/">主页</van-tabbar-item>
       <van-tabbar-item icon="friends-o" replace to="/my">我的</van-tabbar-item>
     </van-tabbar>

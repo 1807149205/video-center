@@ -10,12 +10,14 @@ const router = createRouter({
     {
       path: '/',
       name: 'main',
+      redirect: '/video',
       component: MainView,
       children: [
         {
-          path: '/',
+          path: '/video',
           name: 'VideoView',
-          component: VideoView
+          component: VideoView,
+          props: (route) => ({ searchParam: route.query.searchParam }),
         },
         {
           path: '/my',
