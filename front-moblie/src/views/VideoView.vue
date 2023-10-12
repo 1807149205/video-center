@@ -1,15 +1,7 @@
-<script setup lang="ts">
-
-</script>
+<script setup lang="ts"></script>
 
 <template>
-
-<div>
-    VideoView
-</div>
-
+  <div>VideoView</div>
 </template>
 
-<style scoped>
-
-</style>
+<style scoped></style>
