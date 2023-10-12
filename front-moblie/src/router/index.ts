@@ -1,6 +1,8 @@
 import { createRouter, createWebHistory } from 'vue-router'
 // @ts-ignore
 import MainView from "@/views/MainView.vue";
+import VideoView from '@/views/VideoView.vue';
+import MyView from '@/views/MyView.vue'
 
 const router = createRouter({
   history: createWebHistory(import.meta.env.BASE_URL),
@@ -8,7 +10,19 @@ const router = createRouter({
     {
       path: '/',
       name: 'main',
-      component: MainView
+      component: MainView,
+      children: [
+        {
+          path: '/',
+          name: 'VideoView',
+          component: VideoView
+        },
+        {
+          path: '/my',
+          name: 'My',
+          component: MyView
+        }
+      ]
     },
     // {
     //   path: '/about',
