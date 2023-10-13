@@ -12,7 +12,7 @@ import java.io.Serializable;
 import java.util.Date;
 
 /**
- *
+ * 电影分类表
  * @TableName t_category
  */
 @Getter

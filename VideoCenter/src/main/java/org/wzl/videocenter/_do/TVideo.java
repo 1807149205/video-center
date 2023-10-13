@@ -12,7 +12,7 @@ import java.io.Serializable;
 import java.util.Date;
 
 /**
- * 
+ * 电影实体表
  * @TableName t_video
  */
 @Getter
