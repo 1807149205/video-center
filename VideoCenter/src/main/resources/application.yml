@@ -1,0 +1,5 @@
+spring:
+  application:
+    name: video-center
+  profiles:
+    active: dev
