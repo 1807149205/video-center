@@ -17,7 +17,7 @@ const router = createRouter({
           path: '/video',
           name: 'VideoView',
           component: VideoView,
-          props: (route) => ({ searchParam: route.query.searchParam }),
+          props: (route) => ({ searchParam: route.query.searchParam })
         },
         {
           path: '/my',
