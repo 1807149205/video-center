@@ -16,7 +16,6 @@ import java.util.Date;
  * @TableName t_video
  */
 @Getter
-@Data
 @TableName(value ="t_video")
 public class TVideo implements Serializable {
     /**

@@ -16,7 +16,6 @@ import java.util.Date;
  * @TableName t_video_category
  */
 @Getter
-@Data
 @TableName(value ="t_video_category")
 public class TVideoCategory implements Serializable {
     /**
