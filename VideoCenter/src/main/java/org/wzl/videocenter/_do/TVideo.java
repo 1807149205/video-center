@@ -28,6 +28,11 @@ public class TVideo implements Serializable {
     private Integer id;
 
     /**
+     * 视频名称
+     */
+    private String videoName;
+
+    /**
      * 视频的地址
      * -- GETTER --
      *  视频的地址
@@ -97,6 +102,10 @@ public class TVideo implements Serializable {
      */
     public void setUpdateDate(Date updateDate) {
         this.updateDate = updateDate;
+    }
+
+    public void setVideoName(String videoName) {
+        this.videoName = videoName;
     }
 
     @Override

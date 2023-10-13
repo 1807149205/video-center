@@ -1,0 +1,30 @@
+<!DOCTYPE html>
+<html xmlns:th="http://www.thymeleaf.org" lang="en">
+<head th:replace="lib">
+    <title>添加视频</title>
+</head>
+<body>
+<div th:include="head"></div>
+<div style="display: flex;justify-content: center">
+    <div class="alert alert-light" role="alert">
+        <span th:text="${msg}"></span>
+    </div>
+    <form style="width: 80%;margin-top: 20px" th:action="@{/video/save}" method="post">
+        <div class="mb-3">
+            <label for="videoName" class="form-label">视频名称</label>
+            <input type="text" class="form-control" id="videoName" aria-describedby="emailHelp" name="videoName">
+        </div>
+        <div class="mb-3">
+            <label for="videoPath" class="form-label">视频地址</label>
+            <input type="text" class="form-control" id="videoPath" name="videoPath">
+        </div>
+        <div class="mb-3">
+            <label for="videoImgPath" class="form-label">图片地址</label>
+            <input type="text" class="form-control" id="videoImgPath" name="videoImgPath">
+        </div>
+        <button type="submit" class="btn btn-primary">添加视频</button>
+    </form>
+</div>
+
+</body>
+</html>
