@@ -9,13 +9,14 @@ import lombok.Data;
 import lombok.Getter;
 
 import java.io.Serializable;
+import java.time.LocalDateTime;
 import java.util.Date;
 
 /**
  * 电影实体表
  * @TableName t_video
  */
-@Getter
+@Data
 @TableName(value ="t_video")
 public class TVideo implements Serializable {
     /**
@@ -55,7 +56,7 @@ public class TVideo implements Serializable {
 
      */
     @TableField(fill = FieldFill.INSERT)
-    private Date createDate;
+    private LocalDateTime createDate;
 
     /**
      * 修改时间
@@ -64,49 +65,10 @@ public class TVideo implements Serializable {
 
      */
     @TableField(fill = FieldFill.UPDATE)
-    private Date updateDate;
+    private LocalDateTime updateDate;
 
     @TableField(exist = false)
     private static final long serialVersionUID = 1L;
-
-    /**
-     * 主键id
-     */
-    public void setId(Integer id) {
-        this.id = id;
-    }
-
-    /**
-     * 视频的地址
-     */
-    public void setVideoPath(String videoPath) {
-        this.videoPath = videoPath;
-    }
-
-    /**
-     * 视频图片地址
-     */
-    public void setVideoImgPath(String videoImgPath) {
-        this.videoImgPath = videoImgPath;
-    }
-
-    /**
-     * 创建时间
-     */
-    public void setCreateDate(Date createDate) {
-        this.createDate = createDate;
-    }
-
-    /**
-     * 修改时间
-     */
-    public void setUpdateDate(Date updateDate) {
-        this.updateDate = updateDate;
-    }
-
-    public void setVideoName(String videoName) {
-        this.videoName = videoName;
-    }
 
     @Override
     public boolean equals(Object that) {

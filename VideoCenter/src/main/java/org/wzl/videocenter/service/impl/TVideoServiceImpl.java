@@ -6,6 +6,8 @@ import org.wzl.videocenter.service.TVideoService;
 import org.wzl.videocenter.mapper.TVideoMapper;
 import org.springframework.stereotype.Service;
 
+import java.time.LocalDateTime;
+
 /**
 * @author Administrator
 * @description 针对表【t_video】的数据库操作Service实现
@@ -15,6 +17,11 @@ import org.springframework.stereotype.Service;
 public class TVideoServiceImpl extends ServiceImpl<TVideoMapper, TVideo>
     implements TVideoService{
 
+    @Override
+    public void saveVideo(TVideo tVideo) {
+        tVideo.setUpdateDate(LocalDateTime.now());
+        save(tVideo);
+    }
 }
 
 

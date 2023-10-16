@@ -3,13 +3,59 @@
 <head th:replace="lib">
     <title>添加视频</title>
 </head>
-<body>
+
+<script>
+    function load() {
+        console.log($);
+    }
+    function addVideo() {
+        if ($("#videoName").val() === "") {
+            $("#videoTip").html("请输入视频名称");
+            return false;
+        }
+        if ($("#videoPath").val() === "") {
+            $("#videoTip").html("请输入视频地址");
+            return false;
+        }
+        if ($("#videoImgPath").val() === "") {
+            $("#videoTip").html("请输入图片地址");
+            return false;
+        }
+        const postParam = {
+            "videoName": $("#videoName").val(),
+            "videoPath": $("#videoPath").val(),
+            "videoImgPath": $("#videoImgPath").val()
+        };
+        $.ajax({
+            type: "POST",
+            url: "/video/save",
+            data: JSON.stringify(postParam),
+            contentType: "application/json",
+            success: function (res) {
+                if (res.code === 200) {
+                    alert("添加成功");
+                    $("#videoName").val("");
+                    $("#videoPath").val("");
+                    $("#videoImgPath").val("");
+                }
+            },
+            error: function () {
+
+            }
+        })
+        return true;
+    }
+
+</script>
+
+<body onload="load()">
 <div th:include="head"></div>
+<div class="alert alert-light" role="alert" th:text="${msg}" id="videoTip">
+
+</div>
+
 <div style="display: flex;justify-content: center">
-    <div class="alert alert-light" role="alert">
-        <span th:text="${msg}"></span>
-    </div>
-    <form style="width: 80%;margin-top: 20px" th:action="@{/video/save}" method="post">
+    <form style="width: 80%;margin-top: 20px" id="addVideoForm">
         <div class="mb-3">
             <label for="videoName" class="form-label">视频名称</label>
             <input type="text" class="form-control" id="videoName" aria-describedby="emailHelp" name="videoName">
@@ -22,7 +68,7 @@
             <label for="videoImgPath" class="form-label">图片地址</label>
             <input type="text" class="form-control" id="videoImgPath" name="videoImgPath">
         </div>
-        <button type="submit" class="btn btn-primary">添加视频</button>
+        <button type="button" class="btn btn-primary" onclick="addVideo()">添加视频</button>
     </form>
 </div>
 

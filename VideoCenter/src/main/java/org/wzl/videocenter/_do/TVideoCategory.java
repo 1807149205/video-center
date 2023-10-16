@@ -7,15 +7,18 @@ import com.baomidou.mybatisplus.annotation.TableId;
 import com.baomidou.mybatisplus.annotation.TableName;
 import lombok.Data;
 import lombok.Getter;
+import lombok.ToString;
 
 import java.io.Serializable;
+import java.time.LocalDateTime;
 import java.util.Date;
 
 /**
  * 电影分类实体关联表
  * @TableName t_video_category
  */
-@Getter
+@Data
+@ToString
 @TableName(value ="t_video_category")
 public class TVideoCategory implements Serializable {
     /**
@@ -50,7 +53,7 @@ public class TVideoCategory implements Serializable {
 
      */
     @TableField(fill = FieldFill.INSERT)
-    private Date createTime;
+    private LocalDateTime createDate;
 
     /**
      * 更新时间
@@ -58,91 +61,10 @@ public class TVideoCategory implements Serializable {
      *  更新时间
 
      */
-    @TableField(fill = FieldFill.UPDATE)
-    private Date uptateTime;
+    @TableField(fill = FieldFill.INSERT_UPDATE)
+    private LocalDateTime updateDate;
 
     @TableField(exist = false)
     private static final long serialVersionUID = 1L;
 
-    /**
-     * 主键id
-     */
-    public void setId(Integer id) {
-        this.id = id;
-    }
-
-    /**
-     * 视频id
-     */
-    public void setVideoId(Integer videoId) {
-        this.videoId = videoId;
-    }
-
-    /**
-     * 分类id
-     */
-    public void setCategoryId(Integer categoryId) {
-        this.categoryId = categoryId;
-    }
-
-    /**
-     * 创建时间
-     */
-    public void setCreateTime(Date createTime) {
-        this.createTime = createTime;
-    }
-
-    /**
-     * 更新时间
-     */
-    public void setUptateTime(Date uptateTime) {
-        this.uptateTime = uptateTime;
-    }
-
-    @Override
-    public boolean equals(Object that) {
-        if (this == that) {
-            return true;
-        }
-        if (that == null) {
-            return false;
-        }
-        if (getClass() != that.getClass()) {
-            return false;
-        }
-        TVideoCategory other = (TVideoCategory) that;
-        return (this.getId() == null ? other.getId() == null : this.getId().equals(other.getId()))
-            && (this.getVideoId() == null ? other.getVideoId() == null : this.getVideoId().equals(other.getVideoId()))
-            && (this.getCategoryId() == null ? other.getCategoryId() == null : this.getCategoryId().equals(other.getCategoryId()))
-            && (this.getCreateTime() == null ? other.getCreateTime() == null : this.getCreateTime().equals(other.getCreateTime()))
-            && (this.getUptateTime() == null ? other.getUptateTime() == null : this.getUptateTime().equals(other.getUptateTime()));
-    }
-
-    @Override
-    public int hashCode() {
-        final int prime = 31;
-        int result = 1;
-        result = prime * result + ((getId() == null) ? 0 : getId().hashCode());
-        result = prime * result + ((getVideoId() == null) ? 0 : getVideoId().hashCode());
-        result = prime * result + ((getCategoryId() == null) ? 0 : getCategoryId().hashCode());
-        result = prime * result + ((getCreateTime() == null) ? 0 : getCreateTime().hashCode());
-        result = prime * result + ((getUptateTime() == null) ? 0 : getUptateTime().hashCode());
-        return result;
-    }
-
-    @Override
-    public String toString() {
-        StringBuilder sb = new StringBuilder();
-        sb.append(getClass().getSimpleName());
-        sb.append(" [");
-        sb.append("Hash = ").append(hashCode());
-        sb.append(", id=").append(id);
-        sb.append(", videoId=").append(videoId);
-        sb.append(", categoryId=").append(categoryId);
-        sb.append(", createTime=").append(createTime);
-        sb.append(", uptateTime=").append(uptateTime);
-        sb.append(", serialVersionUID=").append(serialVersionUID);
-        sb.append("]");
-        return sb.toString();
-    }
 }

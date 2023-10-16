@@ -44,13 +44,13 @@ public class VideoController {
         IPage<TVideo> tVideoIPage = new Page<>();
         tVideoIPage.setSize(size);
         tVideoIPage.setCurrent(page);
-        IPage<TVideo> tVideoIPage1 = tVideoMapper.selectPage(tVideoIPage, null);
-        return Resp.ok(tVideoIPage1);
+        IPage<TVideo> res = tVideoMapper.selectPage(tVideoIPage, null);
+        return Resp.ok(res);
     }
 
     @PostMapping("/save")
     public Resp<Boolean> save(@RequestBody TVideo tVideo) {
-        tVideoMapper.insert(tVideo);
+        tVideoService.saveVideo(tVideo);
         return Resp.ok();
     }
 

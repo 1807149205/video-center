@@ -1,0 +1,9 @@
+<component name="libraryTable">
+  <library name="jQuery" type="javaScript">
+    <CLASSES>
+      <root url="file://$PROJECT_DIR$/VideoCenter/src/main/resources/static/js/jQuery.js" />
+    </CLASSES>
+    <JAVADOC />
+    <SOURCES />
+  </library>
+</component>
