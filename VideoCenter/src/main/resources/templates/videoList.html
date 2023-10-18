@@ -4,7 +4,58 @@
     <title>所有视频列表</title>
 </head>
 <body>
+
+<script>
+
+    $(function() {
+        console.log('页面加载成功');
+    })
+
+</script>
+
 <div th:include="head"></div>
+
+<div style="width: 80%;margin-left: 10%">
+    <div style="display: flex;justify-content: center">
+        <table class="table table-hover">
+            <thead>
+            <tr>
+                <th scope="col">id</th>
+                <th scope="col">视频名称</th>
+                <th scope="col">视频地址</th>
+                <th scope="col">视频图片地址</th>
+                <th scope="col">添加日期</th>
+                <th scope="col">修改日期</th>
+                <th scope="col"></th>
+                <th scope="col"></th>
+            </tr>
+            </thead>
+            <tbody>
+            <tr th:each="video : ${list.records}">
+                <th th:text="${video.id}"></th>
+                <th th:text="${video.videoName}"></th>
+                <th th:text="${video.videoPath}"></th>
+                <th th:text="${video.videoImgPath}"></th>
+                <th th:text="${video.createDate}"></th>
+                <th th:text="${video.updateDate}"></th>
+                <th>
+                    <a class="btn btn-success" th:href="'/videoDetail?id=' + ${video.id}">修改</a>
+                </th>
+                <th>
+                    <button class="btn btn-outline-warning">删除</button>
+                </th>
+            </tr>
+            </tbody>
+        </table>
+    </div>
+    <div class="d-grid gap-2 d-md-flex justify-content-md-end">
+        <a th:class="'btn btn-primary me-md-2 ' + ${list.current == 1 ? 'disabled' : ''}" type="button" th:href="'/videoList/' + ${list.current - 1}">上一页</a>
+        <span class="text-black-50" th:text="${list.current}" id="currentPage"></span>页
+        <a th:class="'btn btn-primary ' + ${list.getTotal() / list.getSize() == list.current - 1 ? 'disabled' : ''}" type="button" th:href="'/videoList/' + ${list.current + 1}">下一页</a>
+    </div>
+</div>
+
+
 
 </body>
 </html>

@@ -41,11 +41,7 @@ public class VideoController {
 
     @GetMapping("/page/{size}/{page}")
     public Resp<?> page(@PathVariable Integer page, @PathVariable Integer size) {
-        IPage<TVideo> tVideoIPage = new Page<>();
-        tVideoIPage.setSize(size);
-        tVideoIPage.setCurrent(page);
-        IPage<TVideo> res = tVideoMapper.selectPage(tVideoIPage, null);
-        return Resp.ok(res);
+        return Resp.ok(tVideoService.getPage(page, size));
     }
 
     @PostMapping("/save")

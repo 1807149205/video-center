@@ -1,15 +1,23 @@
 package org.wzl.videocenter.controller.web;
 
+import com.baomidou.mybatisplus.core.toolkit.Wrappers;
+import com.baomidou.mybatisplus.core.conditions.Wrapper;
+import com.baomidou.mybatisplus.core.metadata.IPage;
 import org.springframework.stereotype.Controller;
 import org.springframework.ui.Model;
 import org.springframework.web.bind.annotation.GetMapping;
 import org.springframework.web.bind.annotation.ModelAttribute;
+import org.springframework.web.bind.annotation.PathVariable;
 import org.springframework.web.bind.annotation.PostMapping;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.wzl.videocenter._do.TVideo;
+import org.wzl.videocenter.dto.TVideoDTO;
 import org.wzl.videocenter.service.TVideoService;
 
 import javax.annotation.Resource;
+import java.time.LocalDateTime;
+import java.time.format.DateTimeFormatter;
+import java.util.List;
 
 /**
  * Web页面
@@ -45,9 +53,25 @@ public class IndexController {
         return "addVideo";
     }
 
-    @GetMapping("/videoList")
-    public String videoList(Model model) {
+    /**
+     * 视频的分页查询列表
+     * @param model
+     * @param page 当前多少页
+     * @return
+     */
+    @GetMapping("/videoList/{page}")
+    public String videoList(Model model, @PathVariable Integer page) {
+        IPage<TVideoDTO> list = tVideoService.getPage(page, 10);
+        model.addAttribute("list", list);
         return "videoList";
+    }
+
+    @GetMapping("/videoDetail")
+    public String videoDetail(String id, Model model) {
+        TVideo video = tVideoService.getOne(Wrappers.<TVideo>lambdaQuery()
+                .eq(TVideo::getId, Integer.parseInt(id)));
+        model.addAttribute("video", video);
+        return "videoDetail";
     }
 
 }

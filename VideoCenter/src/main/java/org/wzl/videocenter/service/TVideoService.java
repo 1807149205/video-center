@@ -1,7 +1,10 @@
 package org.wzl.videocenter.service;
 
+import com.baomidou.mybatisplus.core.metadata.IPage;
+import com.baomidou.mybatisplus.extension.plugins.pagination.Page;
 import org.wzl.videocenter._do.TVideo;
 import com.baomidou.mybatisplus.extension.service.IService;
+import org.wzl.videocenter.dto.TVideoDTO;
 
 /**
 * @author Administrator
@@ -11,4 +14,6 @@ import com.baomidou.mybatisplus.extension.service.IService;
 public interface TVideoService extends IService<TVideo> {
 
     void saveVideo(TVideo tVideo);
+
+    IPage<TVideoDTO> getPage(Integer page, Integer size);
 }

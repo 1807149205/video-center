@@ -1,0 +1,40 @@
+<!DOCTYPE html>
+<html lang="en" xmlns:th="http://www.thymeleaf.org">
+<head  th:replace="lib">
+    <meta charset="UTF-8">
+    <title>视频详情</title>
+</head>
+<body>
+<div th:include="head"></div>
+
+<div style="width: 80%; margin-left: 10%">
+    <div class="col-12">
+        <label for="videoId" class="form-label">id</label>
+        <input type="text" class="form-control" id="videoId" th:value="${video.id}" readonly>
+    </div>
+    <div class="col-12">
+        <label for="videoName" class="form-label">视频名称</label>
+        <input type="text" class="form-control" id="videoName" th:value="${video.videoName}">
+    </div>
+    <div class="col-12">
+        <label for="videoPath" class="form-label">视频路径url</label>
+        <input type="text" class="form-control" id="videoPath" th:value="${video.videoPath}">
+    </div>
+    <div class="col-12">
+        <label for="videoImgPath" class="form-label">视频图片路径</label>
+        <input type="text" class="form-control" id="videoImgPath" th:value="${video.videoImgPath}">
+    </div>
+    <div class="col-12">
+        <label for="createDate" class="form-label">创建时间</label>
+        <input type="text" class="form-control" id="createDate" th:value="${video.createDate}">
+    </div>
+    <div class="col-12">
+        <label for="updateDate" class="form-label">修改时间</label>
+        <input type="text" class="form-control" id="updateDate" th:value="${video.updateDate}">
+    </div>
+    <button class="btn btn-primary">修改</button>
+</div>
+
+
+</body>
+</html>
