@@ -1,22 +1,23 @@
-package org.wzl.videocenter;
+package org.wzl.videocenter.controller;
 
 import lombok.extern.slf4j.Slf4j;
-import org.junit.jupiter.api.Test;
-import org.springframework.boot.test.context.SpringBootTest;
+import org.springframework.web.bind.annotation.GetMapping;
+import org.springframework.web.bind.annotation.RequestMapping;
+import org.springframework.web.bind.annotation.RestController;
 import org.wzl.videocenter._do.TVideo;
 import org.wzl.videocenter.dto.VideoResourceDTO;
 import org.wzl.videocenter.feign.VideoResourceFeign;
 import org.wzl.videocenter.service.TVideoService;
+import org.wzl.videocenter.service.VideoService;
+import org.wzl.videocenter.utils.Resp;
 
 import javax.annotation.Resource;
-import java.util.Collection;
-import java.util.HashMap;
 import java.util.List;
-import java.util.Map;
 
-@SpringBootTest
+@RestController
 @Slf4j
-class VideoCenterApplicationTests {
+@RequestMapping("/test")
+public class TestController {
 
     @Resource
     private VideoResourceFeign videoResourceFeign;
@@ -24,8 +25,8 @@ class VideoCenterApplicationTests {
     @Resource
     private TVideoService tVideoService;
 
-    @Test
-    void contextLoads() {
+    @GetMapping("/loadFile")
+    public Resp<Boolean> loadFile() {
         List<VideoResourceDTO> dataJson = videoResourceFeign.getDataJson();
         log.info("获取到的json为:{}", dataJson);
         dataJson.forEach(d -> {
@@ -33,11 +34,12 @@ class VideoCenterApplicationTests {
             String videoName = d.getVideoName();
             String newVideoName = videoName.substring(0, videoName.length() - 4);
             tVideo.setVideoName(newVideoName);
-            tVideo.setVideoPath("https://1807149205.github.io/GITHUB_pages/video/" + newVideoName + ".mp4");
-            tVideo.setVideoImgPath("https://1807149205.github.io/GITHUB_pages/video_img/" + newVideoName + ".jpg");
+            tVideo.setVideoPath(newVideoName + ".mp4");
+            tVideo.setVideoImgPath(newVideoName + ".jpg");
             log.info("video: {}" , tVideo);
             tVideoService.saveVideo(tVideo);
         });
+        return Resp.ok();
     }
 
 }

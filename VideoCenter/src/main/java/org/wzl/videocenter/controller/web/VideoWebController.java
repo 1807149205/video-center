@@ -1,23 +1,18 @@
 package org.wzl.videocenter.controller.web;
 
 import com.baomidou.mybatisplus.core.toolkit.Wrappers;
-import com.baomidou.mybatisplus.core.conditions.Wrapper;
 import com.baomidou.mybatisplus.core.metadata.IPage;
 import org.springframework.stereotype.Controller;
 import org.springframework.ui.Model;
 import org.springframework.web.bind.annotation.GetMapping;
 import org.springframework.web.bind.annotation.ModelAttribute;
 import org.springframework.web.bind.annotation.PathVariable;
-import org.springframework.web.bind.annotation.PostMapping;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.wzl.videocenter._do.TVideo;
 import org.wzl.videocenter.dto.TVideoDTO;
 import org.wzl.videocenter.service.TVideoService;
 
 import javax.annotation.Resource;
-import java.time.LocalDateTime;
-import java.time.format.DateTimeFormatter;
-import java.util.List;
 
 /**
  * Web页面
@@ -26,7 +21,7 @@ import java.util.List;
  * @date: 2023-10-13 22:33
  */
 @Controller
-public class IndexController {
+public class VideoWebController {
 
     @Resource
     private TVideoService tVideoService;

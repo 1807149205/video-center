@@ -5,6 +5,37 @@
     <title>视频详情</title>
 </head>
 <body>
+
+<script>
+    function updateVideo() {
+        const videoId = $("#videoId").val();
+        const videoName = $("#videoName").val();
+        const videoPath = $("#videoPath").val();
+        const videoImgPath = $("#videoImgPath").val();
+        const postParam = {
+            "id": videoId,
+            "videoName": videoName,
+            "videoPath": videoPath,
+            "videoImgPath": videoImgPath
+        }
+        $.ajax({
+            type: "POST",
+            url: "/video/update",
+            data: JSON.stringify(postParam),
+            contentType: "application/json",
+            success: function (res) {
+                if (res.code === 200) {
+                    alert("修改成功");
+                    location.reload();
+                }
+            },
+            error: function () {
+
+            }
+        })
+    }
+</script>
+
 <div th:include="head"></div>
 
 <div style="width: 80%; margin-left: 10%">
@@ -32,7 +63,7 @@
         <label for="updateDate" class="form-label">修改时间</label>
         <input type="text" class="form-control" id="updateDate" th:value="${video.updateDate}">
     </div>
-    <button class="btn btn-primary">修改</button>
+    <button class="btn btn-primary" onclick="updateVideo()">修改</button>
 </div>
 
 

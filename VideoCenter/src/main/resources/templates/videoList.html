@@ -2,14 +2,41 @@
 <html xmlns:th="http://www.thymeleaf.org" lang="en">
 <head th:replace="lib">
     <title>所有视频列表</title>
+    <style>
+        .text-ellipsis {
+            white-space: nowrap; /* 防止文本换行 */
+            overflow: hidden; /* 隐藏超出范围的文本 */
+            text-overflow: ellipsis; /* 显示省略号 */
+        }
+    </style>
 </head>
 <body>
-
 <script>
 
     $(function() {
         console.log('页面加载成功');
     })
+
+    function deleteVideo(videoId) {
+        const postParam = {
+            "id": videoId
+        };
+        $.ajax({
+            type: "POST",
+            url: "/video/delete",
+            data: JSON.stringify(postParam),
+            contentType: "application/json",
+            success: function (res) {
+                if (res.code === 200) {
+                    alert("删除成功");
+                    location.reload();
+                }
+            },
+            error: function () {
+
+            }
+        })
+    }
 
 </script>
 
@@ -33,17 +60,28 @@
             <tbody>
             <tr th:each="video : ${list.records}">
                 <th th:text="${video.id}"></th>
-                <th th:text="${video.videoName}"></th>
-                <th th:text="${video.videoPath}"></th>
-                <th th:text="${video.videoImgPath}"></th>
+                <th style="width: 260px" class="text-ellipsis">
+                    <div class="text-ellipsis" th:text="${video.videoName}">
+
+                    </div>
+                </th>
+                <th style="width: 100px">
+                    <a th:href="${video.videoPath}">视频网址</a>
+                </th>
+                <th style="width: 120px">
+                    <a th:href="${video.videoImgPath}">视频图片</a>
+                </th>
                 <th th:text="${video.createDate}"></th>
                 <th th:text="${video.updateDate}"></th>
-                <th>
+                <th style="width: 100px">
                     <a class="btn btn-success" th:href="'/videoDetail?id=' + ${video.id}">修改</a>
                 </th>
-                <th>
-                    <button class="btn btn-outline-warning">删除</button>
+                <th style="width: 200px">
+                    <a class="btn btn-success" th:href="'/videoCategory?videoId=' + ${video.id}">添加视频分类</a>
                 </th>
+<!--                <th style="width: 100px">-->
+<!--                    <button class="btn btn-outline-warning" th:attr="onclick='deleteVideo(\'' + ${video.id} + '\')'">删除</button>-->
+<!--                </th>-->
             </tr>
             </tbody>
         </table>

@@ -1,0 +1,43 @@
+<!DOCTYPE html>
+<html lang="en"  xmlns:th="http://www.thymeleaf.org">
+<head  th:replace="lib">
+    <meta charset="UTF-8">
+    <title>Title</title>
+    <style>
+        .artplayer-app{
+            width: 800px;
+            height: 500px;
+        }
+    </style>
+</head>
+<body>
+
+<script>
+    $(function () {
+        console.log($("#videoPathUrl").html())
+        var art = new Artplayer({
+            container: '.artplayer-app',
+            url: $("#videoPathUrl").html(),
+            controls: [
+                {
+                    position: 'right',
+                    html: '↗全屏',
+                    click: function () {
+                        art.fullscreen = !art.fullscreen;
+                    },
+                },
+            ],
+        });
+    })
+</script>
+
+<div th:include="head"></div>
+<div class="align-items-center">
+    <span style="display: none" id="videoPathUrl" th:text="${video.videoPath}"></span>
+    <h2 style="text-align: center" th:text="${video.videoName}"></h2>
+    <div style="display: flex;justify-content: center">
+        <div class="artplayer-app" style="width: 800px;height: 600px"></div>
+    </div>
+</div>
+</body>
+</html>

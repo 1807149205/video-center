@@ -59,4 +59,10 @@ public class VideoController {
         return Resp.ok();
     }
 
+    @PostMapping("/update")
+    public Resp<Boolean> update(@RequestBody TVideo tVideo) {
+        tVideoMapper.updateById(tVideo);
+        return Resp.ok();
+    }
+
 }
