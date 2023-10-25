@@ -1,0 +1,52 @@
+<!DOCTYPE html>
+<html xmlns:th="http://www.thymeleaf.org" lang="en">
+<head  th:replace="lib">
+    <meta charset="UTF-8">
+    <title>添加视频分类</title>
+</head>
+<body>
+<script>
+    function addCategory() {
+        const categoryName = $("#categoryName").val();
+        if (categoryName === "") {
+            $("#categoryTip").html("请输入视频名称");
+            return false;
+        }
+        const postParam = {
+            "categoryName": categoryName
+        };
+        $.ajax({
+            type: "POST",
+            url: "/category/save",
+            data: JSON.stringify(postParam),
+            contentType: "application/json",
+            success: function (res) {
+                if (res.code === 200) {
+                    alert("添加成功");
+                }
+            },
+            error: function () {
+
+            }
+        })
+        return true;
+    }
+
+</script>
+<div th:include="head"></div>
+<div class="alert alert-light" role="alert" th:text="${msg}" id="categoryTip">
+
+</div>
+<div>
+    <div style="display: flex;justify-content: center">
+        <form style="width: 80%;margin-top: 20px" id="addCategoryForm">
+            <div class="mb-3">
+                <label for="categoryName" class="form-label">视频名称</label>
+                <input type="text" class="form-control" id="categoryName" name="categoryName">
+            </div>
+            <button type="button" class="btn btn-primary" onclick="addCategory()">添加视频</button>
+        </form>
+    </div>
+</div>
+</body>
+</html>

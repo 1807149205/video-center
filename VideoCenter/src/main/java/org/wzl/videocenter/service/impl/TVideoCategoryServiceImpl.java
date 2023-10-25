@@ -17,6 +17,7 @@ import org.wzl.videocenter.vo.VideoCategoryVO;
 import javax.annotation.Resource;
 import java.util.ArrayList;
 import java.util.List;
+import java.util.stream.Collectors;
 
 /**
 * @author 卫志龙
@@ -56,20 +57,25 @@ public class TVideoCategoryServiceImpl extends ServiceImpl<TVideoCategoryMapper,
     public VideoCategoryVO getAllCategoriesByVideoId(Integer videoId) {
         List<VideoCategoryDTO> allCategoriesByVideoId = this.baseMapper.getAllCategoriesByVideoId(videoId);
         VideoCategoryVO videoCategoryVO = new VideoCategoryVO();
-        List<TCategory> list = new ArrayList<>();
-        for (VideoCategoryDTO vc : allCategoriesByVideoId) {
-            TVideo video = new TVideo();
-            video.setId(vc.getVideoId());
-            video.setVideoImgPath(vc.getVideoImgPath());
-            video.setVideoName(vc.getVideoName());
-            video.setVideoPath(vc.getVideoPath());
-            video.setCreateDate(vc.getVideoCreateDate());
-            video.setUpdateDate(vc.getVideoUpdateDate());
-            videoCategoryVO.setVideo(video);
-            TCategory category = new TCategory();
-            category.setCategoryName(vc.getCategoryName());
-            //TODO 写了
-        }
+        List<TCategory> list = allCategoriesByVideoId
+                .stream()
+                .map(vc -> {
+                    TVideo video = new TVideo();
+                    video.setId(vc.getVideoId());
+                    video.setVideoImgPath(vc.getVideoImgPath());
+                    video.setVideoName(vc.getVideoName());
+                    video.setVideoPath(vc.getVideoPath());
+                    video.setCreateDate(vc.getVideoCreateDate());
+                    video.setUpdateDate(vc.getVideoUpdateDate());
+                    videoCategoryVO.setVideo(video);
+                    TCategory category = new TCategory();
+                    category.setCategoryName(vc.getCategoryName());
+                    category.setId(vc.getCategoryId());
+                    category.setCreateDate(vc.getCategoryCreateDate());
+                    category.setUpdateDate(vc.getCategoryUpdateDate());
+                    return category;
+                })
+                .collect(Collectors.toList());
         videoCategoryVO.setCategories(list);
         return videoCategoryVO;
     }

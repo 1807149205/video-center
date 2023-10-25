@@ -91,6 +91,11 @@ public class VideoCategoryController {
         return Resp.ok(videoCategoryService.removeById(videoCategory));
     }
 
+    /**
+     * 获取
+     * @param videoId
+     * @return
+     */
     @GetMapping("/getAllCategoriesByVideoId")
     public Resp<VideoCategoryVO> getAllCategoriesByVideoId(Integer videoId) {
         return Resp.ok(videoCategoryService.getAllCategoriesByVideoId(videoId));
