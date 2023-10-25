@@ -1,5 +1,6 @@
 package org.wzl.videocenter.service;
 
+import com.baomidou.mybatisplus.core.metadata.IPage;
 import org.wzl.videocenter._do.TCategory;
 import com.baomidou.mybatisplus.extension.service.IService;
 
@@ -10,4 +11,5 @@ import com.baomidou.mybatisplus.extension.service.IService;
 */
 public interface TCategoryService extends IService<TCategory> {
 
+    IPage<TCategory> getPage(Integer page, Integer size);
 }

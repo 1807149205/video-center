@@ -14,6 +14,17 @@
 
     <sql id="Base_Column_List">
         id,video_id,category_id,
-        create_time,uptate_time
+        create_date,uptate_date
     </sql>
+    <select id="getAllCategoriesByVideoId" resultType="org.wzl.videocenter.dto.VideoCategoryDTO">
+        select
+            v.id as video_id,v.video_path,v.video_img_path,
+            v.create_date as video_create_date,v.update_date as video_update_date,
+            c.id as category_id,c.category_name,c.create_date as category_create_date,
+            c.update_date as category_update_date
+        from t_video_category vc
+        left join t_video v on vc.video_id = v.id
+        left join t_category c on vc.category_id = c.id
+        where v.id = #{videoId}
+    </select>
 </mapper>

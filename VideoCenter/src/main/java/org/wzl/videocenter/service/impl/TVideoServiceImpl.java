@@ -15,7 +15,7 @@ import java.util.List;
 import java.util.stream.Collectors;
 
 /**
-* @author Administrator
+* @author 卫志龙
 * @description 针对表【t_video】的数据库操作Service实现
 * @createDate 2023-10-13 12:03:56
 */

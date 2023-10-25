@@ -43,4 +43,8 @@ public class Resp<T> {
         return new Resp<>(null, responseEnum.getCode(), responseEnum.getMsg());
    }
 
+    public static <T> Resp<T> fail(ResponseEnum responseEnum, String msg) {
+        return new Resp<>(null, responseEnum.getCode(), msg);
+    }
+
 }

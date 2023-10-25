@@ -57,11 +57,11 @@
     </div>
     <div class="col-12">
         <label for="createDate" class="form-label">创建时间</label>
-        <input type="text" class="form-control" id="createDate" th:value="${video.createDate}">
+        <input type="text" class="form-control" id="createDate" th:value="${video.createDate}" readonly>
     </div>
     <div class="col-12">
         <label for="updateDate" class="form-label">修改时间</label>
-        <input type="text" class="form-control" id="updateDate" th:value="${video.updateDate}">
+        <input type="text" class="form-control" id="updateDate" th:value="${video.updateDate}" readonly>
     </div>
     <button class="btn btn-primary" onclick="updateVideo()">修改</button>
 </div>

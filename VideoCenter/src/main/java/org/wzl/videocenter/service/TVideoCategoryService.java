@@ -2,6 +2,11 @@ package org.wzl.videocenter.service;
 
 import org.wzl.videocenter._do.TVideoCategory;
 import com.baomidou.mybatisplus.extension.service.IService;
+import org.wzl.videocenter.dto.ConnVideoCategoryDTO;
+import org.wzl.videocenter.dto.VideoCategoryDTO;
+import org.wzl.videocenter.vo.VideoCategoryVO;
+
+import java.util.List;
 
 /**
 * @author Administrator
@@ -10,4 +15,11 @@ import com.baomidou.mybatisplus.extension.service.IService;
 */
 public interface TVideoCategoryService extends IService<TVideoCategory> {
 
+    /**
+     * 保存视频与分类之间的联系
+     * @param connVideoCategoryDTO
+     */
+    void saveConnVideoCategory(ConnVideoCategoryDTO connVideoCategoryDTO);
+
+    VideoCategoryVO getAllCategoriesByVideoId(Integer videoId);
 }
