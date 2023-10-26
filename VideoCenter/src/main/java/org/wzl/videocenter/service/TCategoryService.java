@@ -12,4 +12,5 @@ import com.baomidou.mybatisplus.extension.service.IService;
 public interface TCategoryService extends IService<TCategory> {
 
     IPage<TCategory> getPage(Integer page, Integer size);
+
 }

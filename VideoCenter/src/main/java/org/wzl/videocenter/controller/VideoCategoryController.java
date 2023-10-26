@@ -92,7 +92,9 @@ public class VideoCategoryController {
     }
 
     /**
-     * 获取
+     * 根据视频id获取所有的分类，
+     * 该接口需要传入一个videoId，会返回一个video实体类和分类实体类的集合
+     *
      * @param videoId
      * @return
      */
