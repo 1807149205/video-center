@@ -5,7 +5,7 @@ import org.wzl.videocenter._do.TCategory;
 import com.baomidou.mybatisplus.extension.service.IService;
 
 /**
-* @author Administrator
+* @author 卫志龙
 * @description 针对表【t_category】的数据库操作Service
 * @createDate 2023-10-13 12:03:34
 */
