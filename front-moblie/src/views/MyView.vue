@@ -2,6 +2,9 @@
 
 <template>
   <div>MyView</div>
+  <div class="personalContainer">
+    
+  </div>
 </template>
 
 <style scoped></style>
