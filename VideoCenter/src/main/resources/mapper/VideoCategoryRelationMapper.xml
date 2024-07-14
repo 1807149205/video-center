@@ -1,0 +1,15 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!DOCTYPE mapper
+        PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN"
+        "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
+<mapper namespace="org.wzl.videocenter.mapper.VideoCategoryRelationMapper">
+
+    <resultMap id="BaseResultMap" type="org.wzl.videocenter._do.VideoCategoryRelation">
+            <id property="videoId" column="video_id" jdbcType="VARCHAR"/>
+            <id property="categoryId" column="category_id" jdbcType="VARCHAR"/>
+    </resultMap>
+
+    <sql id="Base_Column_List">
+        video_id,category_id
+    </sql>
+</mapper>

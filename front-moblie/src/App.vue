@@ -3,9 +3,11 @@ import { RouterView } from 'vue-router'
 </script>
 
 <template>
-  <div class="index">
-    <RouterView />
-  </div>
+  <van-config-provider theme="dark">
+    <div class="index">
+      <RouterView />
+    </div>
+  </van-config-provider>
 </template>
 
 <style scoped></style>

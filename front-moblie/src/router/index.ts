@@ -3,6 +3,7 @@ import { createRouter, createWebHashHistory } from 'vue-router'
 import MainView from '@/views/MainView.vue'
 import VideoView from '@/views/VideoView.vue'
 import MyView from '@/views/MyView.vue'
+import LoginView from '@/views/LoginView.vue'
 
 const router = createRouter({
   history: createWebHashHistory(),
@@ -21,8 +22,13 @@ const router = createRouter({
           path: '/my',
           name: 'My',
           component: MyView
-        }
-      ]
+        },
+      ],
+    },
+    {
+      path: '/login',
+      name: 'Login',
+      component: LoginView
     }
     // {
     //   path: '/about',
