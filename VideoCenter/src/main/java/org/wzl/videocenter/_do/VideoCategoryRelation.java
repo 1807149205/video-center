@@ -17,13 +17,11 @@ public class VideoCategoryRelation implements Serializable {
     /**
      * 
      */
-    @TableId
     private String videoId;
 
     /**
      * 
      */
-    @TableId
     private String categoryId;
 
     @TableField(exist = false)

@@ -12,5 +12,5 @@ public interface UserService extends IService<User> {
 
     void register(User user);
 
-    void login(User user);
+    User login(User user);
 }

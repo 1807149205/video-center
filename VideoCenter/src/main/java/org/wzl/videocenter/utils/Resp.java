@@ -19,8 +19,8 @@ public class Resp <T> {
         return new Resp<T>(null, "success", 200);
     }
 
-    public static <T> Resp<T> success(T data, String msg) {
-        return new Resp<T>(data, msg, null);
+    public static <T> Resp<T> success(T data) {
+        return new Resp<T>(data, "success", null);
     }
 
     public static <T> Resp<T> fail(String msg) {

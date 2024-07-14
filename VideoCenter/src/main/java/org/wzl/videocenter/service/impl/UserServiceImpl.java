@@ -35,7 +35,7 @@ public class UserServiceImpl extends ServiceImpl<UserMapper, User>
     }
 
     @Override
-    public void login(User user) {
+    public User login(User user) {
         commonValid(user);
 
         User targetUser = getOne(Wrappers.<User>lambdaQuery().eq(User::getUsername, user.getUsername()));
@@ -46,6 +46,9 @@ public class UserServiceImpl extends ServiceImpl<UserMapper, User>
         if (!user.getPassword().equals(targetUser.getPassword())) {
             throw new BizException("密码错误");
         }
+
+        targetUser.setPassword("*");
+        return targetUser;
     }
 
     private void commonValid(User user) {

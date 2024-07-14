@@ -30,9 +30,8 @@ public class UserController {
     }
 
     @PostMapping("/login")
-    public Resp<?> login(@RequestBody User user) {
-        userService.login(user);
-        return Resp.success();
+    public Resp<User> login(@RequestBody User user) {
+        return Resp.success(userService.login(user));
     }
 
 }
