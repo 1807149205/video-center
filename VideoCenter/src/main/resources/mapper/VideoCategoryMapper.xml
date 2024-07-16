@@ -7,13 +7,13 @@
     <resultMap id="BaseResultMap" type="org.wzl.videocenter._do.VideoCategory">
             <id property="id" column="id" jdbcType="CHAR"/>
             <result property="categoryName" column="category_name" jdbcType="VARCHAR"/>
-            <result property="pId" column="p_id" jdbcType="VARCHAR"/>
+            <result property="parentId" column="parent_id" jdbcType="VARCHAR"/>
             <result property="createDate" column="create_date" jdbcType="TIMESTAMP"/>
             <result property="updateDate" column="update_date" jdbcType="TIMESTAMP"/>
     </resultMap>
 
     <sql id="Base_Column_List">
-        id,category_name,p_id,
+        id,category_name,parent_id,
         create_date,update_date
     </sql>
 </mapper>

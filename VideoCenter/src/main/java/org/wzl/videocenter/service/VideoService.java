@@ -4,6 +4,7 @@ import org.springframework.web.multipart.MultipartFile;
 import org.wzl.videocenter._do.Video;
 import com.baomidou.mybatisplus.extension.service.IService;
 import org.wzl.videocenter.bo.VideoChunkBO;
+import org.wzl.videocenter.dto.VideoUploadDTO;
 
 import java.io.IOException;
 
@@ -19,4 +20,6 @@ public interface VideoService extends IService<Video> {
     void upload(MultipartFile file, String videoName, String userId) throws IOException;
 
     String upload(MultipartFile file);
+
+    void upload2(VideoUploadDTO videoUploadDTO);
 }

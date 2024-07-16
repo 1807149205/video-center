@@ -1,55 +1,77 @@
 <script setup lang="ts">
 import router from '@/router'
 import { showToast } from 'vant'
-import { reactive, ref } from 'vue'
+import {computed, onMounted, reactive, ref} from 'vue'
 import HttpClient from '@/utils/HttpClient'
 import axios from 'axios'
 import { useUserStore } from '@/stores/user'
 import VideoUpload from '@/components/VideoUpload.vue'
 
 const userStore = useUserStore();
-const uploadParma = reactive({
-  userId: userStore.userInfo.id,
-  videoName: ''
+
+const videoName = ref('');
+const uploadLoading = ref(false);
+const categorySelectPopupVis = ref(false);
+const selectedCategory = ref();
+const selectedCategoryArr = ref([]);
+
+let options = [
+  {
+    text: '浙江省',
+    value: '330000',
+    children: [{ text: '杭州市', value: '330100' }],
+  },
+  {
+    text: '江苏省',
+    value: '320000',
+    children: [{ text: '南京市', value: '320100' }],
+  },
+];
+
+const videoPostBtnDisabled = computed(() => {
+  return (!videoName.value || selectedCategoryArr.value.length <= 1);
 })
 
-const uploadLoading = ref(false);
+const categorySelectHandle = ({ selectedOptions }) => {
+  const selected = selectedOptions[selectedOptions.length - 1];
+  let isCategoryNew = !selectedCategoryArr.value.some(category => category.value === selected.value);
 
-const onClickLeft = () => {
-  router.back();
+  if (isCategoryNew) {
+    selectedCategoryArr.value.push(selected);
+  }
+
+  selectedCategory.value = null;
+  categorySelectPopupVis.value = false;
 }
 
-const beforeRead = async (file) => {
+const onClickLeft = () => {
+  router.push('/my');
+}
+
+const uploadHandler = async (videoId: string) => {
   uploadLoading.value = true;
-  if (!uploadParma.videoName) {
-    showToast('视频名称为空');
-    uploadLoading.value = false;
-    return false;
-  }
-  if (file.type !== 'video/mp4') {
-    showToast('请上传 mp4 格式图片');
-    uploadLoading.value = false;
-    return false;
-  }
+  console.log(videoId,'videoId')
   try {
-    const formData = new FormData();
-    formData.append('file', file);
-    formData.append('userId', userStore.userInfo.id);
-    formData.append('videoName', uploadParma.videoName);
-    const resp = await axios({
-      method: 'post',
-      url: `${HttpClient.getUrl()}/video/upload`,
-      data: JSON.stringify(formData),
-    })
+    await HttpClient.post('/video/upload2', JSON.stringify({
+      videoId: videoId,
+      userId: userStore.userInfo.id,
+      videoName: videoName.value,
+      categoryIds: selectedCategoryArr.value.map((category) => category.value)
+    }))
+    showToast({ type: 'success', message: '添加成功！' })
   } finally {
     uploadLoading.value = false;
   }
-  return true;
-};
-
-const uploadHandler = (videoId: string) => {
-  console.log(videoId,'videoId')
 }
+
+const initPage = async () => {
+  options = await HttpClient.get('category/getAll');
+}
+
+onMounted(async () => {
+  await initPage();
+})
+
 
 </script>
 
@@ -63,14 +85,37 @@ const uploadHandler = (videoId: string) => {
 <div class="postVideoContent">
   <van-cell-group inset>
     <!-- 输入任意文本 -->
-    <van-field v-model="uploadParma.videoName" label="视频标题" />
+    <van-field v-model="videoName" label="视频标题" />
+    <van-field label="选择分类" @click="categorySelectPopupVis = true"/>
   </van-cell-group>
-  <div class="uploadContainer">
-    <van-uploader :before-read="beforeRead" accept="video/*">
-      <van-button icon="plus" type="primary" :loading="uploadLoading">上传文件</van-button>
-    </van-uploader>
-<!--    <VideoUpload :data="uploadParma" @uploadEmit="uploadHandler"/>-->
+
+  <van-popup v-model:show="categorySelectPopupVis" round position="bottom">
+    <van-cascader
+        v-model="selectedCategory"
+        title="请选择所在地区"
+        :options="options"
+        @close="categorySelectPopupVis = false"
+        @finish="categorySelectHandle"
+    />
+  </van-popup>
+
+  <div class="tagsContainer">
+    <van-tag plain closeable type="primary" size="medium" v-for="c in selectedCategoryArr">
+      {{c.text}}
+    </van-tag>
   </div>
+
+  <div class="uploadContainer">
+    <!--    <van-uploader :before-read="beforeRead" accept="video/*">-->
+    <!--      <van-button icon="plus" type="primary" :loading="uploadLoading">上传文件</van-button>-->
+    <!--    </van-uploader>-->
+    <VideoUpload :btn-disabled="videoPostBtnDisabled" @uploadEmit="uploadHandler" />
+  </div>
+
+  <div>
+    <span>请至少选择两个视频分类</span>
+  </div>
+
 </div>
 </template>
 
@@ -83,5 +128,11 @@ const uploadHandler = (videoId: string) => {
   display: flex;
   justify-content: center;
   margin-top: 10px;
+}
+.tagsContainer {
+  margin-top: 2rem;
+}
+.tagsContainer > * {
+  margin-left: 0.5rem;
 }
 </style>

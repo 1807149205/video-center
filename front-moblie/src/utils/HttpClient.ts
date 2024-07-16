@@ -30,7 +30,7 @@ class HTTPClient {
 
 
     if (responseData.code === 410) {
-      showNotify({ message: `提示:${responseData.msg}` });
+      showNotify({ type: 'danger', message: `提示:${responseData.msg}` });
       throw new Error(`Request failed with code ${responseData.code}: ${responseData.msg}`);
     }
 

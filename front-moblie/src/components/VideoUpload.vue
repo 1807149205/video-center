@@ -4,6 +4,12 @@ import { message } from 'ant-design-vue';
 import type { UploadChangeParam, UploadProps } from 'ant-design-vue';
 import HTTPClient from "@/utils/HTTPClient";
 
+const props = defineProps({
+  btnDisabled: {
+    required: true,
+    type: Boolean
+  }
+})
 
 const emit = defineEmits(['uploadEmit'])
 
@@ -63,7 +69,7 @@ const beforeUpload = (file: UploadProps['fileList'][number]) => {
             :action="HTTPClient.getUrl() + '/video/upload1'"
             :before-upload="beforeUpload"
             @change="handleChange">
-    <VanButton type="primary">上传</VanButton>
+    <VanButton type="primary" :disabled="props.btnDisabled">上传视频</VanButton>
   </a-upload>
 </template>
 <style scoped>

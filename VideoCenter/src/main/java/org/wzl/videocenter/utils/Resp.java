@@ -20,7 +20,7 @@ public class Resp <T> {
     }
 
     public static <T> Resp<T> success(T data) {
-        return new Resp<T>(data, "success", null);
+        return new Resp<T>(data, "success", 200);
     }
 
     public static <T> Resp<T> fail(String msg) {

@@ -49,12 +49,18 @@ public class VideoController {
         return new ResponseEntity<>(videoChunkBO.getResource(), videoChunkBO.getHeaders(), HttpStatus.PARTIAL_CONTENT);
     }
 
-    @PostMapping("/upload")
+    @PostMapping("/upload1")
     public Resp<?> upload(@RequestBody MultipartFile file) throws IOException {
 //    public Resp<?> upload(MultipartFile file, String videoName, String userId) throws IOException {
         VideoUploadDTO videoUploadDTO = new VideoUploadDTO();
 //        videoService.upload(videoUploadDTO.getFile(), videoUploadDTO.getVideoName(), videoUploadDTO.getUserId());
-        videoService.upload(file);
+        String videoId = videoService.upload(file);
+        return Resp.success(videoId);
+    }
+
+    @PostMapping("/upload2")
+    public Resp<?> upload2(@RequestBody VideoUploadDTO videoUploadDTO) {
+        videoService.upload2(videoUploadDTO);
         return Resp.success();
     }
 

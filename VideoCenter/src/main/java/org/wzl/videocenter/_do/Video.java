@@ -7,6 +7,7 @@ import com.baomidou.mybatisplus.annotation.TableName;
 import java.io.Serializable;
 import java.time.LocalDateTime;
 import lombok.Data;
+import lombok.ToString;
 
 /**
  * 
@@ -14,6 +15,7 @@ import lombok.Data;
  */
 @TableName(value ="t_video")
 @Data
+@ToString
 public class Video implements Serializable {
     /**
      * 

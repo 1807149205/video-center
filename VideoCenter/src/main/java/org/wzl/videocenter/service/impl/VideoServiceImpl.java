@@ -12,14 +12,18 @@ import org.springframework.util.ObjectUtils;
 import org.springframework.web.bind.annotation.RequestBody;
 import org.springframework.web.multipart.MultipartFile;
 import org.wzl.videocenter._do.Video;
+import org.wzl.videocenter._do.VideoCategoryRelation;
 import org.wzl.videocenter.bo.VideoChunkBO;
+import org.wzl.videocenter.dto.VideoUploadDTO;
 import org.wzl.videocenter.exception.BizException;
+import org.wzl.videocenter.service.VideoCategoryRelationService;
 import org.wzl.videocenter.service.VideoService;
 import org.wzl.videocenter.mapper.VideoMapper;
 import org.springframework.stereotype.Service;
 import org.wzl.videocenter.utils.IdGen;
 import org.wzl.videocenter.utils.VideoUtil;
 
+import javax.annotation.Resource;
 import java.io.File;
 import java.io.FileInputStream;
 import java.io.IOException;
@@ -28,6 +32,7 @@ import java.nio.file.Files;
 import java.util.Arrays;
 import java.util.List;
 import java.util.UUID;
+import java.util.stream.Collectors;
 
 /**
 * @author 卫志龙
@@ -41,6 +46,9 @@ public class VideoServiceImpl extends ServiceImpl<VideoMapper, Video>
 
     @Value("${video.upload-path}")
     private String uploadPath;
+
+    @Resource
+    private VideoCategoryRelationService videoCategoryRelationService;
 
     private static final List<String> ALLOWED_VIDEO_TYPES = Arrays.asList("video/mp4", "video/x-msvideo", "video/x-matroska");
 
@@ -121,16 +129,16 @@ public class VideoServiceImpl extends ServiceImpl<VideoMapper, Video>
             throw new BizException("电影名称为空");
         }
 
-        Video video = new Video();
-
-        String videoId = IdGen.getId();
-        video.setId(videoId);
-        video.setVideoTime(VideoUtil.getVideoDuration(file));
-        video.setStatus(1);
-        video.setUId(userId);
-        video.setVideoName(videoName);
-
-        save(video);
+//        Video video = new Video();
+//
+//        String videoId = IdGen.getId();
+//        video.setId(videoId);
+//        video.setVideoTime(VideoUtil.getVideoDuration(dest));
+//        video.setStatus(1);
+//        video.setUId(userId);
+//        video.setVideoName(videoName);
+//
+//        save(video);
 
 //        String fileName = videoId + ".mp4";
 //        String path = uploadPath + fileName;
@@ -145,7 +153,9 @@ public class VideoServiceImpl extends ServiceImpl<VideoMapper, Video>
     }
 
     @Override
+    @Transactional(rollbackFor = Exception.class)
     public String upload(MultipartFile file) {
+        log.info("第一次上传开始...");
         String videoId = IdGen.getId();
         String fileName = videoId + ".mp4";
         String path = uploadPath + fileName;
@@ -153,13 +163,45 @@ public class VideoServiceImpl extends ServiceImpl<VideoMapper, Video>
         if (!dest.getParentFile().exists()) {
             dest.getParentFile().mkdirs();
         }
-        log.info("储存路径:{}", fileName + uploadPath);
+        log.info("储存路径:{}", uploadPath + fileName);
         try {
             file.transferTo(dest);
         } catch (IOException e) {
             throw new BizException("文件上传失败");
         }
+
+        Video video = new Video();
+        video.setId(videoId);
+        video.setVideoTime(VideoUtil.getVideoDuration(dest));
+        video.setStatus(0);
+        log.info("video: {}", video);
+        save(video);
+
+        log.info("第一次上传结束...");
         return videoId;
+    }
+
+    @Override
+    @Transactional(rollbackFor = Exception.class)
+    public void upload2(VideoUploadDTO videoUploadDTO) {
+        log.info("第二次上传开始...");
+        Video video = getById(videoUploadDTO.getVideoId());
+        video.setStatus(1);
+        video.setUId(videoUploadDTO.getUserId());
+        video.setVideoName(videoUploadDTO.getVideoName());
+        updateById(video);
+
+        List<VideoCategoryRelation> collect = videoUploadDTO.getCategoryIds().stream().map(i -> {
+            VideoCategoryRelation videoCategoryRelation = new VideoCategoryRelation();
+            videoCategoryRelation.setVideoId(videoUploadDTO.getVideoId());
+            videoCategoryRelation.setCategoryId(i);
+            return videoCategoryRelation;
+        }).collect(Collectors.toList());
+        boolean savedBatch = videoCategoryRelationService.saveBatch(collect);
+
+        log.info("videoCategoryRelation: {}", savedBatch);
+
+        log.info("第二次上传结束...");
     }
 
 

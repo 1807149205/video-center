@@ -29,7 +29,7 @@ public class VideoCategory implements Serializable {
     /**
      * 
      */
-    private String pId;
+    private String parentId;
 
     /**
      * 
