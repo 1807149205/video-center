@@ -19,5 +19,7 @@ declare module 'vue' {
     VanNavBar: typeof import('vant/es')['NavBar']
     VanTabbar: typeof import('vant/es')['Tabbar']
     VanTabbarItem: typeof import('vant/es')['TabbarItem']
+    VanUploader: typeof import('vant/es')['Uploader']
+    VideoUpload: typeof import('./src/components/VideoUpload.vue')['default']
   }
 }

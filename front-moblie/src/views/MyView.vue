@@ -42,6 +42,7 @@ const logout = () => {
     </div>
 
     <div class="buttonGroup">
+      <van-cell title="发布视频" is-link @click="router.push('/postVideo')" v-if="loginStore.isLogin"/>
       <van-cell title="退出当前账号" is-link @click="logout" v-if="loginStore.isLogin"/>
     </div>
   </div>

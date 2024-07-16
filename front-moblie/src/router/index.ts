@@ -4,6 +4,7 @@ import MainView from '@/views/MainView.vue'
 import VideoView from '@/views/VideoView.vue'
 import MyView from '@/views/MyView.vue'
 import LoginView from '@/views/LoginView.vue'
+import PostVideoView from '@/views/PostVideoView.vue'
 
 const router = createRouter({
   history: createWebHashHistory(),
@@ -23,6 +24,11 @@ const router = createRouter({
           name: 'My',
           component: MyView
         },
+        {
+          path: '/postVideo',
+          name: 'PostVideo',
+          component: PostVideoView
+        }
       ],
     },
     {

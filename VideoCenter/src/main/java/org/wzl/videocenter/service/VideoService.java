@@ -1,7 +1,11 @@
 package org.wzl.videocenter.service;
 
+import org.springframework.web.multipart.MultipartFile;
 import org.wzl.videocenter._do.Video;
 import com.baomidou.mybatisplus.extension.service.IService;
+import org.wzl.videocenter.bo.VideoChunkBO;
+
+import java.io.IOException;
 
 /**
 * @author 卫志龙
@@ -10,4 +14,9 @@ import com.baomidou.mybatisplus.extension.service.IService;
 */
 public interface VideoService extends IService<Video> {
 
+    VideoChunkBO getVideoChunk(String rangeHeader, long start, String videoPath);
+
+    void upload(MultipartFile file, String videoName, String userId) throws IOException;
+
+    String upload(MultipartFile file);
 }

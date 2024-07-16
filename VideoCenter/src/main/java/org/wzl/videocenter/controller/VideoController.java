@@ -7,10 +7,15 @@ import org.springframework.http.HttpRange;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.GetMapping;
+import org.springframework.web.bind.annotation.PostMapping;
+import org.springframework.web.bind.annotation.RequestBody;
 import org.springframework.web.bind.annotation.RequestHeader;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RequestParam;
 import org.springframework.web.bind.annotation.RestController;
+import org.springframework.web.multipart.MultipartFile;
+import org.wzl.videocenter.bo.VideoChunkBO;
+import org.wzl.videocenter.dto.VideoUploadDTO;
 import org.wzl.videocenter.service.VideoService;
 import org.wzl.videocenter.utils.Resp;
 
@@ -38,53 +43,20 @@ public class VideoController {
     @GetMapping("/video")
     public ResponseEntity<InputStreamResource> getVideo(
             @RequestHeader(value = "Range", required = false) String rangeHeader,
-            @RequestParam(value = "start", defaultValue = "0") long start) throws IOException {
+            @RequestParam(value = "start", defaultValue = "0") long start) {
 
-        File videoFile = new File(VIDEO_PATH);
-        long fileLength = videoFile.length();
-
-        // 默认的分段大小（3分钟的视频片段，具体大小需根据视频比特率计算）
-        long chunkSize = 3 * 60 * 1024 * 1024; // 假设视频比特率为1MB/s
-
-        // 计算请求的起始和结束字节
-        long startByte = start;
-        long endByte = Math.min(startByte + chunkSize - 1, fileLength - 1);
-
-        // 如果请求头中包含Range信息，则覆盖start和end字节
-        if (rangeHeader != null && !rangeHeader.isEmpty()) {
-            List<HttpRange> ranges = HttpRange.parseRanges(rangeHeader);
-            if (!ranges.isEmpty()) {
-                HttpRange range = ranges.get(0);
-                startByte = range.getRangeStart(fileLength);
-                endByte = range.getRangeEnd(fileLength);
-            }
-        }
-
-        // 创建输入流和Resource对象
-        InputStream inputStream = new FileInputStream(videoFile);
-        inputStream.skip(startByte);
-        final long finalStartByte = startByte;
-        final long finalEndByte = endByte;
-        InputStreamResource resource = new InputStreamResource(inputStream) {
-            @Override
-            public long contentLength() {
-                return finalEndByte - finalStartByte + 1;
-            }
-
-            @Override
-            public InputStream getInputStream() throws IOException {
-                return inputStream;
-            }
-        };
-
-        // 设置响应头
-        HttpHeaders headers = new HttpHeaders();
-        headers.add("Content-Type", "video/mp4");
-        headers.add("Accept-Ranges", "bytes");
-        headers.add("Content-Length", String.valueOf(finalEndByte - finalStartByte + 1));
-        headers.add("Content-Range", "bytes " + finalStartByte + "-" + finalEndByte + "/" + fileLength);
-
-        return new ResponseEntity<>(resource, headers, HttpStatus.PARTIAL_CONTENT);
+        VideoChunkBO videoChunkBO = videoService.getVideoChunk(rangeHeader, start, VIDEO_PATH);
+        return new ResponseEntity<>(videoChunkBO.getResource(), videoChunkBO.getHeaders(), HttpStatus.PARTIAL_CONTENT);
     }
+
+    @PostMapping("/upload")
+    public Resp<?> upload(@RequestBody MultipartFile file) throws IOException {
+//    public Resp<?> upload(MultipartFile file, String videoName, String userId) throws IOException {
+        VideoUploadDTO videoUploadDTO = new VideoUploadDTO();
+//        videoService.upload(videoUploadDTO.getFile(), videoUploadDTO.getVideoName(), videoUploadDTO.getUserId());
+        videoService.upload(file);
+        return Resp.success();
+    }
+
 
 }

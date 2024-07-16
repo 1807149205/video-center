@@ -3,13 +3,16 @@ import { RouterView } from 'vue-router'
 import { onMounted } from 'vue'
 import UserStorage from '@/utils/UserStorage'
 import { useLoginStore } from '@/stores/login'
+import { useUserStore } from '@/stores/user'
 
 const loginStore = useLoginStore();
+const userStore = useUserStore();
 
 onMounted(async () => {
   const userInfo = UserStorage.getUserInfo();
   if (userInfo) {
     loginStore.isLogin = true;
+    userStore.userInfo = userInfo;
   }
 })
 </script>
