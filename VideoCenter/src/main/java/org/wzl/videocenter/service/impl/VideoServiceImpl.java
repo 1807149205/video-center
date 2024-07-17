@@ -17,6 +17,7 @@ import org.wzl.videocenter.bo.VideoChunkBO;
 import org.wzl.videocenter.dto.VideoUploadDTO;
 import org.wzl.videocenter.exception.BizException;
 import org.wzl.videocenter.service.VideoCategoryRelationService;
+import org.wzl.videocenter.service.VideoProcessingService;
 import org.wzl.videocenter.service.VideoService;
 import org.wzl.videocenter.mapper.VideoMapper;
 import org.springframework.stereotype.Service;
@@ -49,6 +50,9 @@ public class VideoServiceImpl extends ServiceImpl<VideoMapper, Video>
 
     @Resource
     private VideoCategoryRelationService videoCategoryRelationService;
+
+    @Resource
+    private VideoProcessingService videoProcessingService;
 
     private static final List<String> ALLOWED_VIDEO_TYPES = Arrays.asList("video/mp4", "video/x-msvideo", "video/x-matroska");
 
@@ -93,7 +97,7 @@ public class VideoServiceImpl extends ServiceImpl<VideoMapper, Video>
                 }
 
                 @Override
-                public InputStream getInputStream() throws IOException {
+                public InputStream getInputStream() {
                     return inputStream;
                 }
             };
@@ -158,7 +162,6 @@ public class VideoServiceImpl extends ServiceImpl<VideoMapper, Video>
         log.info("第一次上传开始...");
         String videoId = IdGen.getId();
         String fileName = videoId + ".mp4";
-        String path = uploadPath + fileName;
         File dest = new File(uploadPath, fileName);
         if (!dest.getParentFile().exists()) {
             dest.getParentFile().mkdirs();
@@ -178,6 +181,8 @@ public class VideoServiceImpl extends ServiceImpl<VideoMapper, Video>
         save(video);
 
         log.info("第一次上传结束...");
+
+        videoProcessingService.generateThumbnails(video);
         return videoId;
     }
 
