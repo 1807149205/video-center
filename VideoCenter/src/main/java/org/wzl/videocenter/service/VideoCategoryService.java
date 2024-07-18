@@ -1,7 +1,9 @@
 package org.wzl.videocenter.service;
 
+import org.wzl.videocenter._do.Video;
 import org.wzl.videocenter._do.VideoCategory;
 import com.baomidou.mybatisplus.extension.service.IService;
+import org.wzl.videocenter.vo.VideoCategoryRawVO;
 import org.wzl.videocenter.vo.VideoCategoryVO;
 
 import java.util.List;
@@ -18,4 +20,8 @@ public interface VideoCategoryService extends IService<VideoCategory> {
     VideoCategoryVO getAllById(String id);
 
     List<VideoCategoryVO> getAll();
+
+    void saveVideoCategoryBatch(Video video, List<String> categoryIds);
+
+    List<VideoCategoryRawVO> getVideoCategory(Video video);
 }

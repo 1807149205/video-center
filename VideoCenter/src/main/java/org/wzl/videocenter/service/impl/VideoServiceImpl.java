@@ -1,15 +1,17 @@
 package org.wzl.videocenter.service.impl;
 
+import com.baomidou.mybatisplus.core.metadata.IPage;
+import com.baomidou.mybatisplus.core.toolkit.Wrappers;
+import com.baomidou.mybatisplus.extension.plugins.pagination.Page;
 import com.baomidou.mybatisplus.extension.service.impl.ServiceImpl;
 import lombok.extern.slf4j.Slf4j;
+import org.springframework.beans.BeanUtils;
 import org.springframework.beans.factory.annotation.Value;
 import org.springframework.core.io.InputStreamResource;
 import org.springframework.http.HttpHeaders;
 import org.springframework.http.HttpRange;
 import org.springframework.transaction.annotation.Transactional;
-import org.springframework.util.FileCopyUtils;
 import org.springframework.util.ObjectUtils;
-import org.springframework.web.bind.annotation.RequestBody;
 import org.springframework.web.multipart.MultipartFile;
 import org.wzl.videocenter._do.Video;
 import org.wzl.videocenter._do.VideoCategoryRelation;
@@ -17,22 +19,22 @@ import org.wzl.videocenter.bo.VideoChunkBO;
 import org.wzl.videocenter.dto.VideoUploadDTO;
 import org.wzl.videocenter.exception.BizException;
 import org.wzl.videocenter.service.VideoCategoryRelationService;
+import org.wzl.videocenter.service.VideoCategoryService;
 import org.wzl.videocenter.service.VideoProcessingService;
 import org.wzl.videocenter.service.VideoService;
 import org.wzl.videocenter.mapper.VideoMapper;
 import org.springframework.stereotype.Service;
 import org.wzl.videocenter.utils.IdGen;
 import org.wzl.videocenter.utils.VideoUtil;
+import org.wzl.videocenter.vo.VideoVO;
 
 import javax.annotation.Resource;
 import java.io.File;
 import java.io.FileInputStream;
 import java.io.IOException;
 import java.io.InputStream;
-import java.nio.file.Files;
 import java.util.Arrays;
 import java.util.List;
-import java.util.UUID;
 import java.util.stream.Collectors;
 
 /**
@@ -49,7 +51,7 @@ public class VideoServiceImpl extends ServiceImpl<VideoMapper, Video>
     private String uploadPath;
 
     @Resource
-    private VideoCategoryRelationService videoCategoryRelationService;
+    private VideoCategoryService videoCategoryService;
 
     @Resource
     private VideoProcessingService videoProcessingService;
@@ -196,17 +198,22 @@ public class VideoServiceImpl extends ServiceImpl<VideoMapper, Video>
         video.setVideoName(videoUploadDTO.getVideoName());
         updateById(video);
 
-        List<VideoCategoryRelation> collect = videoUploadDTO.getCategoryIds().stream().map(i -> {
-            VideoCategoryRelation videoCategoryRelation = new VideoCategoryRelation();
-            videoCategoryRelation.setVideoId(videoUploadDTO.getVideoId());
-            videoCategoryRelation.setCategoryId(i);
-            return videoCategoryRelation;
-        }).collect(Collectors.toList());
-        boolean savedBatch = videoCategoryRelationService.saveBatch(collect);
-
-        log.info("videoCategoryRelation: {}", savedBatch);
+        videoCategoryService.saveVideoCategoryBatch(video, videoUploadDTO.getCategoryIds());
 
         log.info("第二次上传结束...");
+    }
+
+    @Override
+    public IPage<VideoVO> getPageByUserId(String userId, long page, long size) {
+        IPage<Video> iPage = new Page<>(page, size);
+        IPage<Video> videoIPage = page(iPage, Wrappers.<Video>lambdaQuery()
+                .eq(Video::getUId, userId));
+        return videoIPage.convert(v -> {
+            VideoVO videoVO = new VideoVO();
+            BeanUtils.copyProperties(v, videoVO);
+            videoVO.setVideoCategory(videoCategoryService.getVideoCategory(v));
+            return videoVO;
+        });
     }
 
 

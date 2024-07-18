@@ -1,10 +1,12 @@
 package org.wzl.videocenter.service;
 
+import com.baomidou.mybatisplus.core.metadata.IPage;
 import org.springframework.web.multipart.MultipartFile;
 import org.wzl.videocenter._do.Video;
 import com.baomidou.mybatisplus.extension.service.IService;
 import org.wzl.videocenter.bo.VideoChunkBO;
 import org.wzl.videocenter.dto.VideoUploadDTO;
+import org.wzl.videocenter.vo.VideoVO;
 
 import java.io.IOException;
 
@@ -22,4 +24,6 @@ public interface VideoService extends IService<Video> {
     String upload(MultipartFile file);
 
     void upload2(VideoUploadDTO videoUploadDTO);
+
+    IPage<VideoVO> getPageByUserId(String userId, long page, long size);
 }
