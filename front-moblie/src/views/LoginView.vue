@@ -30,7 +30,7 @@ const onClickLeft = () => {
 
 <template>
   <van-nav-bar
-    title="标题"
+    title="登录"
     left-text="返回"
     left-arrow
     @click-left="onClickLeft"

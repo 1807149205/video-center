@@ -17,6 +17,14 @@ import java.io.IOException;
 */
 public interface VideoService extends IService<Video> {
 
+    /**
+     * 获取视频分片
+     *
+     * @param rangeHeader
+     * @param start         开始时间
+     * @param videoPath     视频地址（绝对地址）
+     * @return              VideoChunkBO
+     */
     VideoChunkBO getVideoChunk(String rangeHeader, long start, String videoPath);
 
     void upload(MultipartFile file, String videoName, String userId) throws IOException;

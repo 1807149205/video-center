@@ -1,11 +1,28 @@
-<script setup lang="ts"></script>
+<script setup lang="ts">
+import router from "@/router";
+import {onMounted, ref} from "vue";
+import AllVideoTab from "@/components/VideoView/AllVideoTab.vue";
+
+const tabsActive = ref(0);
+
+const initPage = async () => {
+
+}
+
+onMounted(async () => {
+  await initPage();
+})
+</script>
 
 <template>
-  <div>VideoView</div>
-  <video controls style="width: 100%">
-    <source src="http://127.0.0.1:8212/video/video?start=0" type="video/mp4">
-    Your browser does not support the video tag.
-  </video>
+  <van-search @click="router.push('/search')" placeholder="请输入搜索关键词" />
+  <van-tabs v-model:active="tabsActive">
+    <van-tab title="全部视频">
+      <AllVideoTab/>
+    </van-tab>
+    <van-tab title="推荐视频">内容 2</van-tab>
+    <van-tab title="我的视频">内容 2</van-tab>
+  </van-tabs>
 </template>
 
 <style scoped></style>
