@@ -16,6 +16,7 @@ import org.springframework.web.multipart.MultipartFile;
 import org.wzl.videocenter._do.Video;
 import org.wzl.videocenter._do.VideoCategoryRelation;
 import org.wzl.videocenter.bo.VideoChunkBO;
+import org.wzl.videocenter.config.VideoConfig;
 import org.wzl.videocenter.dto.VideoUploadDTO;
 import org.wzl.videocenter.exception.BizException;
 import org.wzl.videocenter.service.VideoCategoryRelationService;
@@ -47,8 +48,8 @@ import java.util.stream.Collectors;
 public class VideoServiceImpl extends ServiceImpl<VideoMapper, Video>
     implements VideoService{
 
-    @Value("${video.upload-path}")
-    private String uploadPath;
+    @Resource
+    private VideoConfig videoConfig;
 
     @Resource
     private VideoCategoryService videoCategoryService;
@@ -164,11 +165,11 @@ public class VideoServiceImpl extends ServiceImpl<VideoMapper, Video>
         log.info("第一次上传开始...");
         String videoId = IdGen.getId();
         String fileName = videoId + ".mp4";
-        File dest = new File(uploadPath, fileName);
+        File dest = new File(videoConfig.getUploadPath(), fileName);
         if (!dest.getParentFile().exists()) {
             dest.getParentFile().mkdirs();
         }
-        log.info("储存路径:{}", uploadPath + fileName);
+        log.info("储存路径:{}", videoConfig.getUploadPath() + fileName);
         try {
             file.transferTo(dest);
         } catch (IOException e) {

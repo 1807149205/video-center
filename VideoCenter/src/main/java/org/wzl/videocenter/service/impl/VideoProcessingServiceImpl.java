@@ -4,6 +4,7 @@ import lombok.extern.slf4j.Slf4j;
 import org.springframework.beans.factory.annotation.Value;
 import org.springframework.stereotype.Service;
 import org.wzl.videocenter._do.Video;
+import org.wzl.videocenter.config.VideoConfig;
 import org.wzl.videocenter.exception.BizException;
 import org.wzl.videocenter.service.VideoProcessingService;
 
@@ -19,11 +20,8 @@ import java.util.List;
 @Service
 public class VideoProcessingServiceImpl implements VideoProcessingService {
 
-    @Value("${video.img-path}")
-    private String imgPath;
-
-    @Value("${video.upload-path}")
-    private String uploadPath;
+    @Resource
+    private VideoConfig videoConfig;
 
     private static final String FFmpeg_PATH = "ffmpeg";
 
@@ -31,9 +29,9 @@ public class VideoProcessingServiceImpl implements VideoProcessingService {
 
     @Override
     public void generateThumbnails(Video video) {
-        String videoPath = uploadPath + video.getId() + ".mp4";
+        String videoPath = videoConfig.getUploadPath() + video.getId() + ".mp4";
         List<String> splitVideoTime = splitVideoTime(video.getVideoTime(), SPLIT_COUNT);
-        File imgPathFile = new File(imgPath);
+        File imgPathFile = new File(videoConfig.getImgPath());
         if (!imgPathFile.getParentFile().exists()) {
             imgPathFile.getParentFile().mkdirs();
         }
@@ -50,7 +48,7 @@ public class VideoProcessingServiceImpl implements VideoProcessingService {
     }
 
     private String getVideoImgPath(Video video, int index) {
-        return imgPath + video.getId() + "_" + index + ".jpg";
+        return videoConfig.getImgPath() + video.getId() + "_" + index + ".jpg";
     }
 
     private void captureFrame(String videoPath, String time, String outputImagePath) throws IOException, InterruptedException {
